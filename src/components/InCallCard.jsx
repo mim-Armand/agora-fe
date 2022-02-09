@@ -1,13 +1,17 @@
 import {Button, Card, CardActions, CardContent, IconButton} from "@mui/material";
-import {AgoraVideoPlayer} from "agora-rtc-react";
 import Typography from "@mui/material/Typography";
 import {MicOffTwoTone, MicTwoTone, VideocamOffTwoTone, VideocamTwoTone} from "@mui/icons-material";
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import {ArgoVideoWrapper} from "./ArgoVideoWrapper";
 
 export function InCallCard(props) {
   return <Card sx={{minWidth: 275}} id="not-in-call-card">
-    {props.ready && <AgoraVideoPlayer videoTrack={props.tracks[1]} style={{height: "300px", width: "100%"}}/>}
+    {props.ready &&
+      <ArgoVideoWrapper
+        videoTrack={props.tracks[1]}
+      />
+    }
     <CardContent>
       <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
         Hey there!
