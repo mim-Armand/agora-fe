@@ -1,0 +1,22 @@
+#main-card{
+    width: 50%;
+    margin: 30px;
+}
+
+.member-cards{
+    width: 50%;
+    margin: 30px;
+}
+
+#not-in-call-card{
+    width:60%;
+    margin: 30px auto;
+    /*padding: 30px;*/
+}
+
+#main-container{
+    padding: 0 3px 3px 3px;
+}
+.stat-items{
+    margin: 3px 6px;
+}
