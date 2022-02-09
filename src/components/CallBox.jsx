@@ -1,22 +1,9 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import Typography from '@mui/material/Typography';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  IconButton,
-  Switch
-} from "@mui/material";
-import {MicOffTwoTone, MicTwoTone, VideocamOffTwoTone, VideocamTwoTone,} from "@mui/icons-material"
-import {AgoraVideoPlayer, createClient, createMicrophoneAndCameraTracks} from "agora-rtc-react";
+import {createClient, createMicrophoneAndCameraTracks} from "agora-rtc-react";
 import {InCallCard} from "./InCallCard";
-import {StatDetails} from "./NetworkStats";
 import {CallVideos} from "./CallVideos";
+import {UserCard} from "./UserCard";
 
 const config = {mode: "rtc", codec: "vp8"}
 const useClient = createClient(config);
@@ -198,56 +185,31 @@ const CallBox = () => {
 
   if (!inCall) {
     return (
-      <InCallCard ready={ready} tracks={tracks} onClick={() => joinRoom("test")} micOff={() => mute("audio")}
-                  trackState={trackState} camOff={() => mute("video")}/>
+      <InCallCard
+        ready={ready}
+        tracks={tracks}
+        onClick={() => joinRoom("test")}
+        micOff={() => mute("audio")}
+        trackState={trackState} camOff={() => mute("video")}
+      />
     )
   }
 
   return (
     <div>
-      <Card sx={{minWidth: 275}} className="member-cards">
-        {ready && <AgoraVideoPlayer videoTrack={tracks[1]} style={{height: '300px', width: '100%'}}/>}
-        <CardContent>
-          <Grid container spacing={5}>
-            <Grid item xs={4}>
-
-              <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                You've joined the call!
-              </Typography>
-              <Typography variant="h5" component="div">
-                Room: <code>{secrets.channelName}</code>
-              </Typography>
-              <Typography sx={{mb: 1.5}} color="text.secondary">
-                Members: {client.remoteUsers.length + 1}<br/>
-                <small>uid: {secrets.uid}</small>
-              </Typography>
-            </Grid>
-
-            <Grid item xs={8}>
-              {/*networkStats, rtc, video, audio*/}
-
-              <FormGroup>
-                <FormControlLabel control={<Switch onChange={(s) => {
-                  setStatOpen(s.target.checked);
-                }}/>} label="Stats" checked={statOpen}/>
-              </FormGroup>
-
-              <StatDetails statOpen={statOpen} stats={stats}/>
-
-
-            </Grid>
-          </Grid>
-        </CardContent>
-        <CardActions>
-          <Button size="large" variant="outlined" onClick={() => leaveRoom()}>Leave room!</Button>
-          <IconButton onClick={() => mute("audio")}>
-            {(trackState.audio) ? <MicOffTwoTone color='secondary'/> : <MicTwoTone color='success'/>}
-          </IconButton>
-          <IconButton onClick={() => mute("video")}>
-            {(trackState.video) ? <VideocamOffTwoTone color='secondary'/> : <VideocamTwoTone color='success'/>}
-          </IconButton>
-        </CardActions>
-      </Card>
+      <UserCard
+        ready={ready}
+        tracks={tracks}
+        secrets={secrets}
+        client={client}
+        onChange={(s) => {setStatOpen(s.target.checked)}}
+        checked={statOpen}
+        stats={stats}
+        onClick={() => leaveRoom()}
+        cameraOff={() => mute("audio")}
+        trackState={trackState}
+        microphoneOff={() => mute("video")}
+      />
 
       {users.map(u => {
         return (
